@@ -1,5 +1,5 @@
 
-#include "Firstname_Lastname_project1.h"
+#include "VICTORIA_ROSSI_project1.h"
 #include "testing.h"
 
 #include <iostream>
@@ -36,8 +36,8 @@ using namespace std;
 
 /*** GROUP PROJECT ***/
 // Please list ALL of your other group members as comments below.
-//   Member 1
-//   Member 2
+//   Brian Rosca
+//   Mauricio Alvarez
 
 
 
@@ -57,7 +57,24 @@ using namespace std;
  * */
 template<typename T>
 void bubble_sort(vector<T> &list, bool descending) {
-    // Your code here!
+    for(int i = 0; i< list.size(); i++){
+        for(int j = 0; j<list.size()-i-1; j++){
+            if(descending){
+                if(list[j]<list[j+1]){
+                    T temp = list[j];
+                    list[j] = list[j+1];
+                    list[j+1] = temp;
+                }
+            }
+            else{
+                if(list[j]>list[j+1]){
+                    T temp = list[j];
+                    list[j] = list[j+1];
+                    list[j+1] = temp;
+                }
+            }
+        }
+    }
 }
 
 
@@ -361,6 +378,10 @@ int main() {
     //my_hybrid_sort(test_list);
     //radix_sort(test_list);
 
+    vector<int> test_list = gen_unique_list(10);
+    print_list(test_list);
+    bubble_sort(test_list);
+    print_list(test_list);
 
     return 0;
 }
