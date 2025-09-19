@@ -46,4 +46,6 @@ vector<int> gen_one_percent_rand_list(unsigned int len);
 /**** Student Tests Here ****/
 /* Feel free to write your own tests here! */
 
+bool is_list_sorted(vector<int> &list, bool descending=false);
+
 #endif

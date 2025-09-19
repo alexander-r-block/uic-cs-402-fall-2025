@@ -142,7 +142,23 @@ void selection_sort(vector<T> &list, bool descending) {
  * */
 template<typename T>
 void insertion_sort(vector<T> &list, bool descending) {
-    // Your code here!
+    for(int i = 1; i < list.size(); i++){
+        T key = list[i];
+        int j = i - 1;
+        if(descending){
+            while(j >= 0 && list[j] < key){
+                list[j+1] = list[j];
+                list[j] = key;
+                j--;
+            }
+        } else {
+            while(j >= 0 && list[j] > key){
+                list[j+1] = list[j];
+                list[j] = key;
+                j--;
+            }
+        }
+    }
 }
 
 
@@ -378,10 +394,19 @@ int main() {
     //my_hybrid_sort(test_list);
     //radix_sort(test_list);
 
-    vector<int> test_list = gen_unique_list(10);
-    print_list(test_list);
-    bubble_sort(test_list);
-    print_list(test_list);
+    vector<int> test_list = gen_random_list(10);
+    for (auto n : test_list) {
+        cout << n << ' ';
+    }
+    cout << endl;
+    
+    insertion_sort(test_list, true);
+    for (auto n : test_list) {
+        cout << n << ' ';
+    }
+    cout << endl;
+
+    cout << (is_list_sorted(test_list, true)?"Sorted":"Not sorted") << endl;
 
     return 0;
 }
