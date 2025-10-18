@@ -238,6 +238,43 @@ std::vector<StableInt> gen_stable_int_one_percent(unsigned int len) {
     }
     return list;
 }
+std::vector<StableInt> gen_stable_int_unique(unsigned int len) {
+    std::vector<StableInt> list{};
+    std::vector<int> int_list = gen_unique_int_list(len);
+
+    for(unsigned int i = 0; i < len; ++i) {
+        list.push_back(StableInt(int_list[i],i));
+    }
+    return list;
+}
+std::vector<StableInt> gen_stable_int_ascending(unsigned int len) {
+    std::vector<StableInt> list {}; 
+    std::vector<int> int_list = gen_ascending_list(len);
+
+    for(unsigned int i = 0; i < len; ++i) {
+        list.push_back(StableInt(int_list[i],i));
+    }
+    return list;
+}
+std::vector<StableInt> gen_stable_int_descending(unsigned int len) {
+    std::vector<StableInt> list {}; 
+    std::vector<int> int_list = gen_descending_list(len);
+
+    for(unsigned int i = 0; i < len; ++i) {
+        list.push_back(StableInt(int_list[i],i));
+    }
+    return list;
+}
+std::vector<StableInt> gen_stable_int_random(unsigned int len) {
+    std::vector<StableInt> list {}; 
+    std::vector<int> int_list = gen_random_list(len);
+
+    for(unsigned int i = 0; i < len; ++i) {
+        list.push_back(StableInt(int_list[i],i));
+    }
+    return list;
+}
+
 
 std::vector<StableChar> gen_stable_char_many_dupes(unsigned int len) {
     std::vector<char> char_list = {};

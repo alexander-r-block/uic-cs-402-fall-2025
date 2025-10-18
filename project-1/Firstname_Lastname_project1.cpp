@@ -1,10 +1,13 @@
 
-#include "Firstname_Lastname_project1.h"
-#include "testing.h"
 
 #include <iostream>
 #include <algorithm>
 #include <chrono>
+#include <concepts>
+#include <type_traits>
+
+#include "testing.h"
+#include "Firstname_Lastname_project1.h"
 
 using namespace std;
 
@@ -123,11 +126,13 @@ void selection_sort(vector<T> &list, bool descending) {
  *  bool decending:  if true, then sort in descending order; otherwise sort
  *                   in ascending order (the default)
  * */
+//template<typename T>
+//void insertion_sort(vector<T> &list, bool descending = false);
 template<typename T>
 void insertion_sort(vector<T> &list, bool descending) {
     // Your code here!
+    std::stable_sort(list.begin(), list.end());
 }
-
 
 
 
@@ -261,6 +266,8 @@ void bucket_merge_sort(vector<T> &list, bool descending) {
  *                      - (unsigned) int
  *                      - (unsigned) long int
  */
+//template<class T>
+//concept Integral = std::is_integral<T>::value;
 template<Integral T> 
 void binary_radix_sort(vector<T> &list, bool descending) {
     // Your code here!
@@ -350,17 +357,104 @@ int main() {
      *   - uncomment all lines below that begin with "//".
      *
      */
-    //vector<int> test_list {1, 2, 3, 4, 5};
-    //bubble_sort(test_list);
-    //selection_sort(test_list);
-    //insertion_sort(test_list);
-    //quicksort(test_list);
-    //merge_sort(test_list);
-    //bucket_merge_sort(test_list);
-    //binary_radix_sort(test_list);
-    //my_hybrid_sort(test_list);
-    //radix_sort(test_list);
+    vector<int> test_list {1, 2, 3, 4, 5};
+    vector<unsigned int> test_list2 {1, 2, 3, 4, 5};
+    vector<StableChar> test_list3  {};
+    vector<StableInt> test_list4 {};
+    vector<StableString> test_list5 {};
+    vector<short> test_list6  {};
+    vector<unsigned short> test_list7  {};
+    vector<long> test_list8  {};
+    vector<unsigned long> test_list9  {};
 
+
+    insertion_sort(test_list);
+    insertion_sort(test_list2);
+    insertion_sort(test_list3);
+    insertion_sort(test_list4);
+    insertion_sort(test_list5);
+    insertion_sort(test_list6);
+    insertion_sort(test_list7);
+    insertion_sort(test_list8);
+    insertion_sort(test_list9);
+
+
+    selection_sort(test_list);
+    selection_sort(test_list2);
+    selection_sort(test_list3);
+    selection_sort(test_list4);
+    selection_sort(test_list5);
+    selection_sort(test_list6);
+    selection_sort(test_list7);
+    selection_sort(test_list8);
+    selection_sort(test_list9);
+
+    bubble_sort(test_list);
+    bubble_sort(test_list2);
+    bubble_sort(test_list3);
+    bubble_sort(test_list4);
+    bubble_sort(test_list5);
+    bubble_sort(test_list6);
+    bubble_sort(test_list7);
+    bubble_sort(test_list8);
+    bubble_sort(test_list9);
+
+
+    merge_sort(test_list);
+    merge_sort(test_list2);
+    merge_sort(test_list3);
+    merge_sort(test_list4);
+    merge_sort(test_list5);
+    merge_sort(test_list6);
+    merge_sort(test_list7);
+    merge_sort(test_list8);
+    merge_sort(test_list9);
+
+    quicksort(test_list);
+    quicksort(test_list2);
+    quicksort(test_list3);
+    quicksort(test_list4);
+    quicksort(test_list5);
+    quicksort(test_list6);
+    quicksort(test_list7);
+    quicksort(test_list8);
+    quicksort(test_list9);
+
+
+    bucket_merge_sort(test_list);
+    bucket_merge_sort(test_list2);
+    bucket_merge_sort(test_list3);
+    bucket_merge_sort(test_list4);
+    bucket_merge_sort(test_list5);
+    bucket_merge_sort(test_list6);
+    bucket_merge_sort(test_list7);
+    bucket_merge_sort(test_list8);
+    bucket_merge_sort(test_list9);
+
+
+    my_hybrid_sort(test_list);
+    my_hybrid_sort(test_list2);
+    my_hybrid_sort(test_list3);
+    my_hybrid_sort(test_list4);
+    my_hybrid_sort(test_list5);
+    my_hybrid_sort(test_list6);
+    my_hybrid_sort(test_list7);
+    my_hybrid_sort(test_list8);
+    my_hybrid_sort(test_list9);
+
+    binary_radix_sort(test_list);
+    binary_radix_sort(test_list2);
+    binary_radix_sort(test_list6);
+    binary_radix_sort(test_list7);
+    binary_radix_sort(test_list8);
+    binary_radix_sort(test_list9);
+
+    radix_sort(test_list);
+    radix_sort(test_list2);
+    radix_sort(test_list6);
+    radix_sort(test_list7);
+    radix_sort(test_list8);
+    radix_sort(test_list9);
 
     return 0;
 }

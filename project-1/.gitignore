@@ -1,3 +1,12 @@
-tests/*
-startup/*
+*.b
 .clangd
+results/*.txt
+results/*.cpp
+tests/extra/*.h
+
+
+## Do not ignore my files
+!results/Alex_Block_project1.cpp
+!results/Alex_Block.txt
+!tests/extra/Alex_Block_project1.h
+!tests/extra/testing.*

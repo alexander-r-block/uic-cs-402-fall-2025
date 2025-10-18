@@ -1,26 +1,38 @@
 #include <vector>
 #include <random>
 #include <concepts>
+#include <chrono>
 #include <type_traits>
 
 
-#ifndef FIRSTNAME_LASTNAME_PROJECT1
-#define FIRSTNAME_LASTNAME_PROJECT1
+#ifndef ALEX_BLOCK_PROJECT1
+#define ALEX_BLOCK_PROJECT1
 
 using namespace std;
 
 
 
 /*** Helper Functions ***/
-unsigned int get_rand_index(unsigned int len) {
-    std::srand(std::time({}));
-    return static_cast<unsigned int>(std::rand() % len);
+inline unsigned int get_rand_index(unsigned int len) {
+    srand(time({}));
+    return static_cast<unsigned int>(rand() % len);
 }
 
 
 /*** STUDENT HELPER FUNCTIONS HERE ***/
 
+template<typename T>
+vector<T> merge_recurse(vector<T> list, bool descending = false);
 
+inline int my_int_pow(const int base, const unsigned int power) {
+
+  if (power == 0) return 1;
+  if (power == 1) return base;
+
+  int tmp = my_int_pow(base, power/2);
+  if ((power % 2) == 0) { return tmp * tmp; }
+  else { return base * tmp * tmp; }
+}
 
 /*** END STUDENT HELPER FUNCTIONS ***/
 
@@ -50,7 +62,7 @@ void insertion_sort(vector<T> &list, bool descending = false);
 
 /* Quick Sort */
 template<typename T>
-vector<T>& quick_partition(vector<T> &list, bool descending = false);
+vector<T>& quick_partition(vector<T> &list, unsigned int pivot_index, bool descending = false);
 
 template<typename T>
 void quicksort(vector<T> &list, bool descending = false);

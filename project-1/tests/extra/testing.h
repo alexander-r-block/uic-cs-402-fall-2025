@@ -135,6 +135,10 @@ std::vector<int> gen_one_percent_rand_list(unsigned int len);
 
 std::vector<StableInt> gen_stable_int_many_dupes(unsigned int len);
 std::vector<StableInt> gen_stable_int_one_percent(unsigned int len);
+std::vector<StableInt> gen_stable_int_unique(unsigned int len);
+std::vector<StableInt> gen_stable_int_ascending(unsigned int len);
+std::vector<StableInt> gen_stable_int_descending(unsigned int len);
+std::vector<StableInt> gen_stable_int_random(unsigned int len);
 
 std::vector<StableChar> gen_stable_char_many_dupes(unsigned int len);
 std::vector<StableChar> gen_stable_char_one_percent(unsigned int len);
