@@ -4,13 +4,9 @@ ASSIGNMENT_NAME = "Project 1"
 TOTAL_POINTS_POSSIBLE = 135
 TIMEOUT = {"DEFAULT" = 300}
 POSSIBLE_SOURCE_FILE_STEMS = [ "project1" ]
-#SUBMISSION_PRECOMPILATION_ARGS = {"talha_khan_project1.cpp" = "-std=c++20", "VICTORIA_ROSSI_project1.cpp" = "-std=c++20", "Sreten_Kljaic_project1.cpp" = "-std=c++20", "Matt_Sagat_project1.cpp" = "-std=c++20", "Manan_Patel_project1.cpp" = "-std=c++20", "Christopher_Harrison_project1.cpp" = "-std=c++20", "Andy_Mai_project1.cpp" = "-std=c++20", "Amithi_Bhawsar_project1.cpp" = "-std=c++20", "Adam_Roman_project1.cpp" = "-std=c++20", "Alex_Block_project1.cpp" = "-std=c++20"} # each student submission; format is 'test_case.cpp' = "arg -(std=c++20)"
-#SUBMISSION_PRECOMPILATION_ARGS = { "Adam_Roman_project1.cpp" = "-std=c++20", 'VICTORIA_ROSSI_project1.cpp' = "-std=c++20", 'Alex_Block_project1.cpp' = "-std=c++20"}
 SUBMISSION_PRECOMPILATION_ARGS = {'DEFAULT' = "-std=c++20"}
 TESTCASE_PRECOMPILATION_ARGS = {'DEFAULT' = "-std=c++20"}
 TESTCASE_COMPILATION_ARGS = {'DEFAULT' = "-std=c++20"}
-#TESTCASE_PRECOMPILATION_ARGS = { 'extra-credit.cpp' = "-std=c++20", 'general-radix-test.cpp' = "-std=c++20",  'binary-radix-test.cpp' = "-std=c++20", 'hybrid-test.cpp' = "-std=c++20", 'bucket-merge-test.cpp' = "-std=c++20", 'quicksort-test.cpp' = "-std=c++20", 'merge-test.cpp' = "-std=c++20", 'bubble-test.cpp' = "-std=c++20", 'insertion-test.cpp' = "-std=c++20", 'selection-test.cpp' = "-std=c++20" } # each test case; format is 'test_case.cpp' = "arg -(std=c++20)"
-#TESTCASE_COMPILATION_ARGS = { 'extra-credit.cpp' = "-std=c++20",  'general-radix-test.cpp' = "-std=c++20", 'binary-radix-test.cpp' = "-std=c++20", 'hybrid-test.cpp' = "-std=c++20", 'bucket-merge-test.cpp' = "-std=c++20", 'quicksort-test.cpp' = "-std=c++20",  'merge-test.cpp' = "-std=c++20", 'bubble-test.cpp' = "-std=c++20", 'insertion-test.cpp' = "-std=c++20", 'selection-test.cpp' = "-std=c++20"} # each test case; format is 'test_case.cpp' = "arg -(std=c++20)"
 TESTCASE_WEIGHT = { 'extra-credit.cpp' = 0.1, 'long-general-radix-test.cpp' = 0.07,  'general-radix-test.cpp' = 0.18, 'long-binary-radix-test.cpp' = 0.06, 'binary-radix-test.cpp' = 0.14, 'long-hybrid-test.cpp' = 0.07, 'hybrid-test.cpp' = 0.18, 'long-bucket-merge-test.cpp' = 0.06, 'bucket-merge-test.cpp' = 0.14, 'long-quicksort-test.cpp' = 0.03, 'quicksort-test.cpp' = 0.07, 'long-merge-test.cpp' = 0.03, 'merge-test.cpp' = 0.07, "bubble-test.cpp" = 0.05, "insertion-test.cpp" = 0.05, "selection-test.cpp" = 0.05 }
 
 [GCC]
