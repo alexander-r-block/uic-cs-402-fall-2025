@@ -1,4 +1,5 @@
 
+// be sure to change FIRSTNAME and LASTNAME with your own first and last name
 #ifndef FIRSTNAME_LASTNAME_PROJECT2
 #define FIRSTNAME_LASTNAME_PROJECT2
 

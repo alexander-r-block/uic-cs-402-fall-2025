@@ -39,6 +39,7 @@ My goal will be to also include an autograding resource with these testing files
 
 ### Submission
 As with Project 1, your submission will be via a GitHub repository.
+Please be sure to change all instances of `Firstname_Lastname` with your own first and last name.
 
 ### Grading
 The project is worth 75 points for all students.
