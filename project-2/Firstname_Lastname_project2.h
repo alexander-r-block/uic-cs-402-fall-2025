@@ -31,8 +31,8 @@ struct Node {
     bool operator!=(const Node&) const;
 };
 
-inline bool Node::operator> (const Node& node) const {return path_cost > node.path_cost; }
 inline bool Node::operator>=(const Node& node) const {return path_cost >= node.path_cost; }
+inline bool Node::operator> (const Node& node) const {return path_cost > node.path_cost; }
 inline bool Node::operator==(const Node& node) const {return path_cost == node.path_cost; }
 inline bool Node::operator< (const Node& node) const {return path_cost < node.path_cost; }
 inline bool Node::operator<=(const Node& node) const {return path_cost <= node.path_cost; }
@@ -53,12 +53,12 @@ struct GridNode {
     bool operator!=(const GridNode&) const;
 };
 
-inline bool GridNode::operator> (const GridNode& node) const {return path_cost > node.path_cost; }
-inline bool GridNode::operator>=(const GridNode& node) const {return path_cost >= node.path_cost; }
-inline bool GridNode::operator==(const GridNode& node) const {return path_cost == node.path_cost; }
-inline bool GridNode::operator< (const GridNode& node) const {return path_cost < node.path_cost; }
-inline bool GridNode::operator<=(const GridNode& node) const {return path_cost <= node.path_cost; }
-inline bool GridNode::operator!=(const GridNode& node) const{return path_cost != node.path_cost; }
+inline bool GridNode::operator> (const GridNode& node) const { return path_cost > node.path_cost; }
+inline bool GridNode::operator>=(const GridNode& node) const { return path_cost >= node.path_cost; }
+inline bool GridNode::operator==(const GridNode& node) const { return path_cost == node.path_cost; }
+inline bool GridNode::operator< (const GridNode& node) const { return path_cost < node.path_cost; }
+inline bool GridNode::operator<=(const GridNode& node) const { return path_cost <= node.path_cost; }
+inline bool GridNode::operator!=(const GridNode& node) const { return path_cost != node.path_cost; }
 
 struct GridEdge {
     int from_x;

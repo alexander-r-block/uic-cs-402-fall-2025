@@ -63,7 +63,7 @@ using namespace std;
  *
  * Algorithm Description
  * - Do the following a small constant number of times (at least 2):
- *     - Randomly generate 2^8 unsigned integers. Feel free to use the provided helper function
+ *     - Randomly generate 350 unsigned integers. Feel free to use the provided helper function
  *       `sample_int()`.
  *     - For each of the generated integers:
  *         - Hash the integer
