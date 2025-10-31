@@ -36,6 +36,10 @@ using namespace std;
  */
 
 
+const std::string who_am_i() {
+    return "Some_random_student";
+}
+
 
 /*** GROUP PROJECT ***/
 // Please list ALL of your other group members as comments below.

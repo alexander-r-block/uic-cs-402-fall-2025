@@ -396,7 +396,7 @@ template<typename T>
 void bucket_merge_sort(vector<T> &list, bool descending) {
     // Your code here!
     if(list.size() <= 32) {
-        insertion_sort(list, descending);
+        alex::insertion_sort(list, descending);
     }
     else {
         unsigned int N = list.size();

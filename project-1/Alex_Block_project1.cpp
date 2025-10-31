@@ -400,7 +400,7 @@ vector<unsigned int> calc_bucket_indices(unsigned int N, unsigned int num_bucket
 template<typename T>
 void bucket_merge_sort(vector<T> &list, bool descending) {
     // Your code here!
-    if(list.size() < 32) {
+    if(list.size() <= 32) {
         insertion_sort(list, descending);
     }
     else {
