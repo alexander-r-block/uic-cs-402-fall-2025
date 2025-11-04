@@ -1,6 +1,7 @@
 #include <functional>
 #include <limits.h>
 #include <random>
+#include <iostream>
 
 // be sure to change FIRSTNAME and LASTNAME with your own first and last name
 #include "Firstname_Lastname_project2.h"
@@ -76,8 +77,10 @@ using namespace std;
  */
 
 unsigned int sample_int() {
-    std::srand(std::time({})); 
-    return static_cast<unsigned int>(rand());
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<unsigned int> dist(0);
+    return dist(mt);
 }
 
 unsigned short test_hash(unsigned int input) {
@@ -364,5 +367,8 @@ vector<GridNode> a_star_algorithm(
 }
 
 int main() {
+    for(int i = 0; i < 10; ++i) {
+        cout << sample_int() << endl;
+    }
     return 0;
 }
