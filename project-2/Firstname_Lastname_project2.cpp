@@ -128,9 +128,14 @@ vector<unsigned int> birthday_attack_1(function<unsigned short(unsigned int)> ha
  *   This means updating tort by hashing the previous value of tort once, and hare
  *   by computing the double hash of the previous value of hare (see the initialization
  *   as an example).
- * - Once tort == hare, check if hash(tort) == hash(hare). If not, take "one-step" with
- *   both tort and hare, until this condition is true.
+ * - Once tort == hare, reset tort = 0.
+ * - Now, while hash(tort) != hash(hare) take "one-step" with
+ *   both tort and hare, until hash(tort) == hash(hare).
  * - Output [tort, hare]
+ *
+ * Additional Resources
+ * - The following lecture notes explain both birthday attack algorithms:
+ *      https://people.cs.uchicago.edu/~davidcash/284-autumn-21/12-hash.pdf
  *
  * Hash Function Signature
  *   unsigned short test_hash(unsigned int input);
