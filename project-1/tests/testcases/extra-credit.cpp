@@ -330,7 +330,7 @@ int main() {
     const unsigned int small_list_size {1024};
     const unsigned int num_runs { 15 };
 
-    std::string filename = "/grading_dir/results/" + who_am_i() + ".txt";
+    std::string filename = "/grading_dir/results/extra_credit" + who_am_i() + ".txt";
     std::ofstream out_file(filename);
 
     out_file << "Extra Credit Results for " << who_am_i() << "\n";
