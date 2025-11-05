@@ -367,8 +367,5 @@ vector<GridNode> a_star_algorithm(
 }
 
 int main() {
-    for(int i = 0; i < 10; ++i) {
-        cout << sample_int() << endl;
-    }
     return 0;
 }
