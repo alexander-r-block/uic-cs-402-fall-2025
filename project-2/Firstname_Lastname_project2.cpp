@@ -328,6 +328,7 @@ vector<Node> dijkstras_algorithm(int n, vector<Edge> edges, int source) {
  *      - In A*, this is modified as: v.cost = u.cost + weight(u,v) + heuristic_cost(v, target),
  *        where heuristic_cost(v, target) is a heuristic distance from node v to the target node
  *        target.
+ *          - Note you also change the dijkstra's check to u.cost+weight(u,v)+heuristic_cost(v,target) < v.cost
  *  
  *  As part of your implementation of A*, you are required to implement the function
  *  heuristic_cost(GridNode start, GridNode dest) defined below. Your heuristic should never
