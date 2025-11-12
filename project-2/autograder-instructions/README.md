@@ -104,9 +104,15 @@ Finally, `results` is where the Autograder will output your test results.
 
 ## Running the Autograder
 Running the Autograder is simple.
-From the `project-2` directory, run `./startup/docker_run_grader.sh` or `./startup.podman_run_grader.sh`, depending on if you built the Autograder with Docker or Podman.
+
+1. Copy any `.h` files you are using from the `project-2/` directory to the `project-2/tests/extra/` directory. 
+This is needed for the Autograder to work correctly.
+Note this includes `Firstname_Lastname_project2.h`.
+
+2. From the `project-2` directory, run `./startup/docker_run_grader.sh` or `./startup.podman_run_grader.sh`, depending on if you built the Autograder with Docker or Podman.
 It is important that you do not `cd` into the `startup` directory and run the Autograder from there; you must run it from the `project-2` directory for the provided scripts to work properly.
 
+3. If everything works, the Autograder will print its results to your terminal, as well as output the results in `project-2/results/Firstname_Lastname_project2.cpp`.
 
 ## Writing more test cases for the Autograder
 See [the Autograder documentation](https://zmievsa.github.io/autograder/#/?id=writing-testcases) for how to write test cases.
