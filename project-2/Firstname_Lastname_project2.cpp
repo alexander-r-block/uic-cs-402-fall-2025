@@ -98,6 +98,8 @@ vector<unsigned int> birthday_attack_1(function<unsigned short(unsigned int)> ha
     // signatures match the `test_hash` function signature.
     
     // Your code here!
+    
+    return {0,1};
 }
 
 
@@ -121,8 +123,6 @@ vector<unsigned int> birthday_attack_1(function<unsigned short(unsigned int)> ha
  *   as the output type to make things simple.
  * - The hash function will take `unsigned integers` as input, again to make things simple.
  * - Your function will output two inputs a and b such that h(a) = h(b) (a collision), as a list [a, b].
- *   The output type of the function will be `vector<unsigned int>` to ensure that you can output -1 and
- *   to ensure there is no loss from converting a,b to a signed data-type.
  *
  * Algorithm Description
  * - Maintain two values, `tort` and `hare`, initialized as 
@@ -153,6 +153,8 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
     // signatures match the `test_hash` function signature.
     
     // Your code here!
+
+    return {0, 1};
 }
 
 
@@ -183,6 +185,8 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
 
 vector<int> topological_sort(int n, vector<Edge> edges) {
     // Your code here!
+
+    return {};
 }
 
 
@@ -214,6 +218,8 @@ vector<int> topological_sort(int n, vector<Edge> edges) {
  *
  */
 vector<int> dag_single_source(int n, vector<Edge> edges, int source) {
+
+    return {};
 }
 
 
@@ -249,6 +255,8 @@ vector<Node> dijkstras_algorithm(int n, vector<Edge> edges, int source) {
     // Your code here!
     // Note: see the LeetCode from in-class for the problem "Cheapest Flights
     // K stops" to see how you can create a priority_queue with the Node struct.
+    
+    return {};
 }
 
 
@@ -365,8 +373,16 @@ vector<GridNode> a_star_algorithm(
     // Your code here!
     // Be sure to use "h" from the inputs in your implementation; do not
     // directly use "heruistic_cost" above!
+
+    return {};
 }
 
 int main() {
+    birthday_attack_1(test_hash);
+    birthday_attack_2(test_hash);
+
+    topological_sort(1, {});
+    dag_single_source(1, {}, 0);
+
     return 0;
 }
