@@ -5,10 +5,33 @@ struct Edge {
     int from;
     int to;
     int weight; // default = 1 if unweighted graph
+    Edge(int f, int t, int w = 1) {
+        from = f;
+        to = t;
+        weight = w;
+    }
 };
 
 std::vector<int> topological_sort(int n, std::vector<Edge> edges);
 
+bool is_valid_topo(int n, std::vector<Edge> edges, std::vector<int> order) {
+    // TODO: call my function if order is empty to confirm no sort exists
+    if(order.size() != n) return false;
+    std::vector<std::vector<int>> graph(n);
+    std::vector<int> indeg(n,0);
+    for(const Edge& e: edges) {
+        graph[e.from].push_back(e.to);
+        ++indeg[e.to];
+    }
+    for(int i = 0; i < n; ++i) {
+        int curr = order[i];
+        if(indeg[curr] != 0) return false;
+        for(int& child: graph[curr]) {
+            --indeg[child];
+        }
+    }
+    return true;
+}
 
 int main() {
 
@@ -21,15 +44,10 @@ int main() {
 
 
     std::vector<int> res1 = topological_sort(5, test1);
-    std::vector<int> ans1 = {0, 1, 2, 3, 4};
-    if(res1 == ans1) ++score;
+    if(is_valid_topo(5, test1, res1)) ++score;
 
     std::vector<int> res2 = topological_sort(4, test2);
-    std::vector<int> ans21 = { 0, 2, 1, 3 };
-    std::vector<int> ans22 = { 0, 2, 3, 1 };
-    std::vector<int> ans23 = { 2, 0, 1, 3 };
-    std::vector<int> ans24 = { 2, 0, 3, 1 };
-    if(res2 == ans21 || res2 == ans22 || res2 == ans23 || res2 == ans24) ++score;
+    if(is_valid_topo(4, test2, res2)) ++score;
 
     std::vector<int> res3 = topological_sort(4, test3);
     if(res3.empty()) ++score;

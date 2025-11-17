@@ -1,7 +1,7 @@
 
 // be sure to change FIRSTNAME and LASTNAME with your own first and last name
-#ifndef FIRSTNAME_LASTNAME_PROJECT2
-#define FIRSTNAME_LASTNAME_PROJECT2
+#ifndef ALEX_BLOCK_PROJECT2
+#define ALEX_BLOCK_PROJECT2
 
 #include <functional>
 
@@ -13,6 +13,12 @@ struct Edge {
     int from;
     int to;
     int weight; // default = 1 if unweighted graph
+
+    Edge(int f, int t, int w = 1) {
+        from = f;
+        to = t;
+        weight = w;
+    }
 };
 
 

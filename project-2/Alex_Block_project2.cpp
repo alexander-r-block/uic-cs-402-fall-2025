@@ -2,9 +2,12 @@
 #include <limits.h>
 #include <random>
 #include <iostream>
+#include <unordered_set>
+#include <unordered_map>
+#include <queue>
 
 // be sure to change FIRSTNAME and LASTNAME with your own first and last name
-#include "Firstname_Lastname_project2.h"
+#include "Alex_Block_project2.h"
 
 using namespace std;
 
@@ -98,8 +101,34 @@ vector<unsigned int> birthday_attack_1(function<unsigned short(unsigned int)> ha
     // signatures match the `test_hash` function signature.
     
     // Your code here!
-    
-    return {0,1};
+    const int num_runs = 4; // we'll run the birthday attack 4 times.
+    const int sample_size = 350;
+    std::vector<unsigned int> out {};
+    for(int i = 0; i < 4; ++i) {
+        std::unordered_map<unsigned short, std::vector<unsigned int>> map {};
+        std::unordered_set<unsigned int> samples {};
+
+        while(samples.size() < sample_size) {
+            samples.insert(sample_int());
+        }
+        for(unsigned int sample: samples) {
+            unsigned short hash = hash_function(sample); 
+            if(map[hash].empty()) {
+                map[hash].push_back(sample);
+            }
+            else { // has at least 1 element in it
+                for(unsigned int val: map[hash]) {
+                    unsigned short col_hash = hash_function(val);
+                    if(col_hash == hash && sample != val) {
+                        out = {sample, val};
+                        break;
+                    }
+                }
+            }
+            if(!out.empty()) break;
+        }
+    }
+    return out;
 }
 
 
@@ -153,8 +182,24 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
     // signatures match the `test_hash` function signature.
     
     // Your code here!
+    std::vector<unsigned int> out = {};
 
-    return {0, 1};
+    unsigned short tort = hash_function(0);
+    unsigned short hare = hash_function(tort);
+
+    while(tort != hare) {
+        tort = hash_function(tort);
+        hare = hash_function(hash_function(hare));
+    }
+    tort = 0;
+    while(hash_function(tort) != hash_function(hare)) {
+        tort = hash_function(tort);
+        hare = hash_function(hare);
+    }
+
+    out = {tort, hare};
+
+    return out;
 }
 
 
@@ -185,8 +230,42 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
 
 vector<int> topological_sort(int n, vector<Edge> edges) {
     // Your code here!
+    if(n == 0) return {};
+    if(n == 1) return {0};
 
-    return {};
+    std::vector<int> out = {};
+    std::vector<int> indegree(n,0);
+
+    std::vector<vector<int>> graph(n);
+
+    for(Edge& e: edges) {
+        graph[e.from].push_back(e.to);
+        ++indegree[e.to];
+    }
+    std::queue<int> bfs;
+    int out_size = 0;
+
+    for(int i = 0; i < n; ++i) {
+        if(indegree[i]==0) {
+            bfs.push(i);
+        }
+    }
+
+    while(!bfs.empty()) {
+        int curr = bfs.front();
+        bfs.pop();
+        out.push_back(curr);
+        ++out_size;
+        for(int& child: graph[curr]) {
+            --indegree[child];
+            if(indegree[child]==0) {
+                bfs.push(child);
+            }
+        }
+    }
+
+    if(out_size < n) return {};
+    return out;
 }
 
 
@@ -378,11 +457,24 @@ vector<GridNode> a_star_algorithm(
 }
 
 int main() {
-    birthday_attack_1(test_hash);
-    birthday_attack_2(test_hash);
+    std::vector<unsigned int> collisions = birthday_attack_2(test_hash);
+    std::cout << "{" << std::endl;
+    for(const auto& col: collisions) {
+        std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
+    }
+    std::cout << "}" << std::endl;
+    //birthday_attack_2(test_hash);
 
-    topological_sort(1, {});
-    dag_single_source(1, {}, 0);
+    std::vector<int> topo = topological_sort(5, {Edge(0,1), Edge(1,2), Edge(2,3), Edge(3,4), Edge(4,1)});
+
+    std::cout << "{ ";
+    for(const auto& i: topo) {
+        std::cout << i << ", ";
+    }
+    std::cout << "}" << std::endl;
+
+    //topological_sort(1, {});
+    //dag_single_source(1, {}, 0);
 
     return 0;
 }
