@@ -90,9 +90,9 @@ unsigned int sample_int() {
 }
 
 unsigned short test_hash(unsigned int input) {
-    const unsigned int a = 3177205741;
-    const unsigned int b = 2371597069;
-    return static_cast<unsigned short>(a*input + b);
+    const unsigned int b = 3177205741;
+    const unsigned int a = 2371597069;
+    return a*(input << 2) + b;
 }
 
 // Do not modify this function signature. 
@@ -187,8 +187,9 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
     // Your code here!
     std::vector<unsigned int> out = {};
 
-    unsigned short tort = hash_function(0);
-    unsigned short hare = hash_function(tort);
+    unsigned int tort = hash_function(0);
+    unsigned int hare = hash_function(tort);
+
 
     while(tort != hare) {
         tort = hash_function(tort);
@@ -572,39 +573,48 @@ vector<GridNode> a_star_algorithm(
 }
 
 int main() {
-    std::vector<unsigned int> collisions = birthday_attack_2(test_hash);
-    //std::cout << "{" << std::endl;
-    //for(const auto& col: collisions) {
-    //    std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
-    //}
-    //std::cout << "}" << std::endl;
 
-    std::vector<int> topo = dag_single_source(5, {Edge(0,1), Edge(0,2,-1), Edge(1,3), Edge(2,3), Edge(3,4,-5)}, 1);
-
-    std::cout << "{ ";
-    for(const auto& i: topo) {
-        std::cout << i << ", ";
+    std::vector<unsigned int> collisions = birthday_attack_1(test_hash);
+    std::cout << "{" << std::endl;
+    for(const auto& col: collisions) {
+        std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
     }
     std::cout << "}" << std::endl;
 
-
-    //topological_sort(1, {});
-    //dag_single_source(1, {}, 0);
-    std::vector<Node> dij = dijkstras_algorithm(4, {Edge(0,1,5), Edge(0,2), Edge(1,2,1), Edge(2,1,1), Edge(1,3), Edge(2,3,5)}, 0);
-    cout << "dij = { ";
-    for(const Node& nd: dij) {
-        cout << "(" << nd.id << ", " << nd.path_cost << ", " << nd.pred << "), ";
+    collisions.clear();
+    collisions = birthday_attack_2(test_hash);
+    std::cout << "{" << std::endl;
+    for(const auto& col: collisions) {
+        std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
     }
-    cout << "}" << endl;
+    std::cout << "}" << std::endl;
 
-    std::vector<GridEdge> gedges = {GridEdge(0,0,1,0), GridEdge(1,0,2,0), GridEdge(2,0,2,1), GridEdge(1,0,2,1)};
+    //std::vector<int> topo = dag_single_source(5, {Edge(0,1), Edge(0,2,-1), Edge(1,3), Edge(2,3), Edge(3,4,-5)}, 1);
 
-    std::vector<GridNode> astar = a_star_algorithm(3, 2, gedges, GridNode(0,0), GridNode(2,1), heuristic_cost);
+    //std::cout << "{ ";
+    //for(const auto& i: topo) {
+    //    std::cout << i << ", ";
+    //}
+    //std::cout << "}" << std::endl;
 
-    cout << "astar = { ";
-    for(const GridNode& nd: astar) {
-        cout << "(" << nd.x << ", " << nd.y << ", " << nd.path_cost << ", " << nd.pred_x << ", " << nd.pred_y << "), ";
-    }
-    cout << "}" << endl;
+
+    ////topological_sort(1, {});
+    ////dag_single_source(1, {}, 0);
+    //std::vector<Node> dij = dijkstras_algorithm(4, {Edge(0,1,5), Edge(0,2), Edge(1,2,1), Edge(2,1,1), Edge(1,3), Edge(2,3,5)}, 0);
+    //cout << "dij = { ";
+    //for(const Node& nd: dij) {
+    //    cout << "(" << nd.id << ", " << nd.path_cost << ", " << nd.pred << "), ";
+    //}
+    //cout << "}" << endl;
+
+    //std::vector<GridEdge> gedges = {GridEdge(0,0,1,0), GridEdge(1,0,2,0), GridEdge(2,0,2,1), GridEdge(1,0,2,1)};
+
+    //std::vector<GridNode> astar = a_star_algorithm(3, 2, gedges, GridNode(0,0), GridNode(2,1), heuristic_cost);
+
+    //cout << "astar = { ";
+    //for(const GridNode& nd: astar) {
+    //    cout << "(" << nd.x << ", " << nd.y << ", " << nd.path_cost << ", " << nd.pred_x << ", " << nd.pred_y << "), ";
+    //}
+    //cout << "}" << endl;
     return 0;
 }
