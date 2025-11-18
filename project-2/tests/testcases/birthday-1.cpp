@@ -1,6 +1,7 @@
 #include <functional>
 #include <random>
 
+// todo: both bd1 and bd2, get large list of primes to sample from to choose random hash functions
 
 
 

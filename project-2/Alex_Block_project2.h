@@ -35,6 +35,12 @@ struct Node {
     bool operator< (const Node&) const;
     bool operator<=(const Node&) const;
     bool operator!=(const Node&) const;
+
+    //Node(int i, int pc, int pr = -1) {
+    //    id = i;
+    //    path_cost = pc;
+    //    pred = pr;
+    //}
 };
 
 inline bool Node::operator>=(const Node& node) const {return path_cost >= node.path_cost; }

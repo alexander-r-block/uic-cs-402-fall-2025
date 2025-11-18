@@ -1,10 +1,13 @@
+#include <climits>
 #include <functional>
-#include <limits.h>
+#include <limits>
 #include <random>
 #include <iostream>
 #include <unordered_set>
 #include <unordered_map>
 #include <queue>
+#include <cmath>
+#include <algorithm>
 
 // be sure to change FIRSTNAME and LASTNAME with your own first and last name
 #include "Alex_Block_project2.h"
@@ -297,8 +300,30 @@ vector<int> topological_sort(int n, vector<Edge> edges) {
  *
  */
 vector<int> dag_single_source(int n, vector<Edge> edges, int source) {
+    if(n == 0) return {};
+    if(n == 1) return {0};
+    std::vector<int> out(n, INT_MAX);
+    out[source] = 0;
+    std::vector<int> topo_sort = topological_sort(n, edges);
 
-    return {};
+    std::vector<std::vector<Edge>> graph(n);
+    for(const Edge& e: edges) {
+        graph[e.from].push_back(e);
+    }
+
+    int i = 0;
+    while(topo_sort[i] != source) ++i;
+    while(i < n) { 
+        int curr_node = topo_sort[i];
+        for(const Edge& e: graph[curr_node]) {
+            int child_id = e.to;
+            if(out[curr_node] + e.weight < out[child_id] && out[curr_node] != INT_MAX) {
+                out[child_id] = out[curr_node] + e.weight;
+            }
+        }
+        ++i;
+    }
+    return out;
 }
 
 
@@ -335,7 +360,33 @@ vector<Node> dijkstras_algorithm(int n, vector<Edge> edges, int source) {
     // Note: see the LeetCode from in-class for the problem "Cheapest Flights
     // K stops" to see how you can create a priority_queue with the Node struct.
     
-    return {};
+    if(n == 0) return {};
+    if(n == 1) return {Node(0,0,-1)};
+
+    std::vector<Node> out(n);
+    for(int i = 0; i < n; ++i) {
+        out[i] = Node(i, INT_MAX, -1);
+    }
+
+    std::vector<vector<Edge>> graph(n);
+    for(const Edge& e: edges) {
+        graph[e.from].push_back(e);
+    }
+
+    std::priority_queue<Node, std::vector<Node>, std::greater<Node>> min_queue;
+    min_queue.push(Node(source, 0, -1));
+
+    while(!min_queue.empty()) {
+        Node curr = min_queue.top();
+        min_queue.pop();
+        if(curr.path_cost >= out[curr.id].path_cost) continue;
+        out[curr.id].path_cost = curr.path_cost;
+        out[curr.id].pred = curr.pred;
+        for(const Edge& e: graph[curr.id]) {
+            min_queue.push(Node(e.to, curr.path_cost+e.weight, e.from));
+        }
+    }
+    return out;
 }
 
 
@@ -436,6 +487,7 @@ vector<Node> dijkstras_algorithm(int n, vector<Edge> edges, int source) {
 // You must implement this function.
 double heuristic_cost(GridNode start, GridNode dest) {
     // Your code here!
+    return hypot(dest.x-start.x, dest.y-start.y);
 }
 
 // To test your algorithm with the function "heruistic_cost" above,
@@ -453,19 +505,81 @@ vector<GridNode> a_star_algorithm(
     // Be sure to use "h" from the inputs in your implementation; do not
     // directly use "heruistic_cost" above!
 
-    return {};
+    if(n == 0 || m == 0) return {};
+    if(n == 1 && m == 1) return {GridNode(0,0,0,-1,-1)};
+
+    std::vector<vector<GridEdge>> graph(n*m);
+    std::vector<GridNode> nodes(n*m);
+
+    // (x,y) -> x + m*y
+    for(int i = 0; i < n*m; ++i) {
+        int x_id = i%m;
+        int y_id = i / m;
+        nodes[i] = GridNode(x_id, y_id, std::numeric_limits<double>::max(), -1, -1);
+    }
+
+    for(const GridEdge& e: edges) {
+        int from_id = e.from_x + m*e.from_y;
+        cout << "from_id = " << from_id << endl;
+        graph[from_id].push_back(e);
+    }
+
+    std::priority_queue<GridNode, vector<GridNode>, std::greater<GridNode>> min_queue;
+    min_queue.push(GridNode(source.x, source.y, 0, -1, -1));
+
+    while(!min_queue.empty()) {
+        GridNode curr = min_queue.top();
+        min_queue.pop();
+        int curr_id = curr.x+m*curr.y;
+        if(curr.path_cost >= nodes[curr_id].path_cost) {
+            cout << "continue?" << endl;
+            continue;
+        }
+        cout << "curr_id = " << curr_id << endl;
+        nodes[curr_id] = curr;
+        for(const GridEdge& e: graph[curr_id]) {
+            double e_wt = 1.5;
+            cout << "(to_x, to_y) = (" << e.to_x << ", " << e.to_y << ")" << endl;
+            if(abs(e.from_x - e.to_x) == 0 || abs(e.from_y - e.to_y) == 0) e_wt = 1.0;
+            double cost = curr.path_cost + e_wt + h(GridNode(e.to_x, e.to_y), target);
+            cout << "cost = " << cost << endl;
+            min_queue.push(GridNode(e.to_x, e.to_y, cost, curr.x, curr.y));
+        }
+    }
+
+    int curr_id = target.x + m*target.y;
+    if(nodes[curr_id].pred_x == -1 || nodes[curr_id].pred_y == -1) {
+        return {};
+    }
+
+    std::vector<GridNode> out = {};
+    // reconstruct path
+    int src_id = source.x + m*source.y;
+    while(curr_id != src_id) {
+        cout << curr_id << endl;
+        out.push_back(nodes[curr_id]);
+        curr_id = nodes[curr_id].pred_x + m*nodes[curr_id].pred_y;
+    }
+    out.push_back(nodes[src_id]);
+    std::reverse(out.begin(), out.end());
+    // now reconstruct actual path cost
+    double cost = 0.0;
+    for(int i = 1; i < out.size(); ++i) {
+        cost += (abs(out[i].x - out[i].pred_x) == 0 || abs(out[i].y - out[i].pred_y)) ? 1.0 : 1.5;
+        out[i].path_cost = cost;
+    }
+    return out;
 }
 
 int main() {
     std::vector<unsigned int> collisions = birthday_attack_2(test_hash);
-    std::cout << "{" << std::endl;
-    for(const auto& col: collisions) {
-        std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
-    }
-    std::cout << "}" << std::endl;
-    //birthday_attack_2(test_hash);
+    //std::cout << "{" << std::endl;
+    //for(const auto& col: collisions) {
+    //    std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
+    //}
+    //std::cout << "}" << std::endl;
 
-    std::vector<int> topo = topological_sort(5, {Edge(0,1), Edge(1,2), Edge(2,3), Edge(3,4), Edge(4,1)});
+    std::vector<int> topo = dag_single_source(5, {Edge(0,1), Edge(0,2,-1), Edge(1,3), Edge(2,3), Edge(3,4,-5)}, 1);
 
     std::cout << "{ ";
     for(const auto& i: topo) {
@@ -473,8 +587,24 @@ int main() {
     }
     std::cout << "}" << std::endl;
 
+
     //topological_sort(1, {});
     //dag_single_source(1, {}, 0);
+    std::vector<Node> dij = dijkstras_algorithm(4, {Edge(0,1,5), Edge(0,2), Edge(1,2,1), Edge(2,1,1), Edge(1,3), Edge(2,3,5)}, 0);
+    cout << "dij = { ";
+    for(const Node& nd: dij) {
+        cout << "(" << nd.id << ", " << nd.path_cost << ", " << nd.pred << "), ";
+    }
+    cout << "}" << endl;
 
+    std::vector<GridEdge> gedges = {GridEdge(0,0,1,0), GridEdge(1,0,2,0), GridEdge(2,0,2,1), GridEdge(1,0,2,1)};
+
+    std::vector<GridNode> astar = a_star_algorithm(3, 2, gedges, GridNode(0,0), GridNode(2,1), heuristic_cost);
+
+    cout << "astar = { ";
+    for(const GridNode& nd: astar) {
+        cout << "(" << nd.x << ", " << nd.y << ", " << nd.path_cost << ", " << nd.pred_x << ", " << nd.pred_y << "), ";
+    }
+    cout << "}" << endl;
     return 0;
 }

@@ -1,6 +1,8 @@
 #include <vector>
 #include <limits.h>
 
+// todo: generate random dag; see https://stackoverflow.com/questions/12790337/generating-a-random-dag
+
 struct Edge {
     int from;
     int to;
