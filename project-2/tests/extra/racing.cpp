@@ -10,13 +10,9 @@
 #include <algorithm>
 
 // be sure to change FIRSTNAME and LASTNAME with your own first and last name
-#include "Alex_Block_project2.h"
+#include "racing.h"
 
 using namespace std;
-
-const std::string who_am_i() {
-    return "Alex_Block";
-}
 
 /****************
  * INSTRUCTIONS *
@@ -86,6 +82,9 @@ const std::string who_am_i() {
  *
  */
 
+namespace alex {
+
+
 unsigned int sample_int() {
     std::random_device rd;
     std::mt19937 mt(rd());
@@ -93,10 +92,54 @@ unsigned int sample_int() {
     return dist(mt);
 }
 
+vector<Edge> gen_random_digraph(int n) {
+    const unsigned int edge_percent = 20;
+    const unsigned int max_edge_weight = 99;
+    vector<Edge> edges;
+    for(int i = 0; i < n; ++i) {
+        for(int j = 0; j < n; ++j) {
+            if(i!=j) {
+                if((sample_int() % 100) < edge_percent) {
+                    edges.push_back(Edge(i, j, 1+(sample_int()%max_edge_weight)));
+                }
+            }
+        }
+    }
+    return edges;
+}
+
+pair<int,vector<Edge>> gen_random_dag() {
+    const unsigned int min_per_rank = 1;
+    const unsigned int max_per_rank = 3;
+    const unsigned int min_rank = 3;
+    const unsigned int max_rank = 5;
+    const unsigned int edge_percent = 35;
+    const unsigned int abs_max_edge_weight = 20;
+    int nodes = 0;    
+
+    unsigned int ranks = min_rank + (sample_int() % (max_rank - min_rank + 1));
+
+    vector<Edge> edges;
+
+    for(unsigned int i = 0; i < ranks; ++i) {
+        unsigned int new_nodes = min_per_rank + (sample_int() % (max_per_rank - min_per_rank + 1));
+        for(int j = 0; j < nodes; ++j) {
+            for(int k = 0; k < new_nodes; ++k) {
+                if((sample_int() % 100) < edge_percent) {
+                    int wt = sample_int() % abs_max_edge_weight;
+                    edges.push_back(Edge(j, k+nodes, (sample_int()%2)? wt : -wt));
+                }
+            }
+        }
+        nodes += new_nodes;
+    }
+    return {nodes, edges};
+}
+
 unsigned short test_hash(unsigned int input) {
-    const unsigned int b = 3177205741;
-    const unsigned int a = 2371597069;
-    return a*(input << 2) + b;
+    const unsigned int a = 3177205741;
+    const unsigned int b = 2371597069;
+    return static_cast<unsigned short>(a*input + b);
 }
 
 // Do not modify this function signature. 
@@ -191,9 +234,8 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
     // Your code here!
     std::vector<unsigned int> out = {};
 
-    unsigned int tort = hash_function(0);
-    unsigned int hare = hash_function(tort);
-
+    unsigned short tort = hash_function(0);
+    unsigned short hare = hash_function(tort);
 
     while(tort != hare) {
         tort = hash_function(tort);
@@ -575,54 +617,5 @@ vector<GridNode> a_star_algorithm(
     }
     return out;
 }
+};
 
-int main() {
-
-    std::vector<unsigned int> collisions = birthday_attack_1(test_hash);
-    std::cout << "{" << std::endl;
-    for(const auto& col: collisions) {
-        std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
-    }
-    std::cout << "}" << std::endl;
-
-    collisions.clear();
-    collisions = birthday_attack_2(test_hash);
-    std::cout << "{" << std::endl;
-    for(const auto& col: collisions) {
-        std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
-    }
-    std::cout << "}" << std::endl;
-
-    //std::vector<int> topo = dag_single_source(5, {Edge(0,1), Edge(0,2,-1), Edge(1,3), Edge(2,3), Edge(3,4,-5)}, 1);
-
-    //std::cout << "{ ";
-    //for(const auto& i: topo) {
-    //    std::cout << i << ", ";
-    //}
-    //std::cout << "}" << std::endl;
-
-    //for(int i = 0; i < 15; ++i) {
-    //    int n = 25*(1 << (i/5));
-    //    cout << n << endl;
-    //}
-
-    ////topological_sort(1, {});
-    ////dag_single_source(1, {}, 0);
-    //std::vector<Node> dij = dijkstras_algorithm(4, {Edge(0,1,5), Edge(0,2), Edge(1,2,1), Edge(2,1,1), Edge(1,3), Edge(2,3,5)}, 0);
-    //cout << "dij = { ";
-    //for(const Node& nd: dij) {
-    //    cout << "(" << nd.id << ", " << nd.path_cost << ", " << nd.pred << "), ";
-    //}
-    //cout << "}" << endl;
-
-    //std::vector<GridEdge> gedges = {GridEdge(0,0,1,0), GridEdge(1,0,2,0), GridEdge(2,0,2,1), GridEdge(1,0,2,1)};
-
-    //std::vector<GridNode> astar = a_star_algorithm(3, 2, gedges, GridNode(0,0), GridNode(2,1), heuristic_cost);
-
-    //cout << "astar = { ";
-    //for(const GridNode& nd: astar) {
-    //    cout << "(" << nd.x << ", " << nd.y << ", " << nd.path_cost << ", " << nd.pred_x << ", " << nd.pred_y << "), ";
-    //}
-    //cout << "}" << endl;
-    return 0;
-}
