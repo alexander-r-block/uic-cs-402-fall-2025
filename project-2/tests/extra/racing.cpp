@@ -272,8 +272,8 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
     // Your code here!
     std::vector<unsigned int> out = {};
 
-    unsigned short tort = hash_function(0);
-    unsigned short hare = hash_function(tort);
+    unsigned int tort = hash_function(0);
+    unsigned int hare = hash_function(tort);
 
     while(tort != hare) {
         tort = hash_function(tort);
@@ -610,15 +610,18 @@ vector<GridNode> a_star_algorithm(
 
     std::priority_queue<GridNode, vector<GridNode>, std::greater<GridNode>> min_queue;
     min_queue.push(GridNode(source.x, source.y, 0, -1, -1));
+    int target_id = target.x + m*target.y;
+    int curr_id = -1;
 
     while(!min_queue.empty()) {
         GridNode curr = min_queue.top();
         min_queue.pop();
-        int curr_id = curr.x+m*curr.y;
+        curr_id = curr.x+m*curr.y;
         if(curr.path_cost >= nodes[curr_id].path_cost) {
             continue;
         }
         nodes[curr_id] = curr;
+        if(curr_id == target_id) break;
         for(const GridEdge& e: graph[curr_id]) {
             double e_wt = 1.5;
             if(abs(e.from_x - e.to_x) == 0 || abs(e.from_y - e.to_y) == 0) e_wt = 1.0;
@@ -627,9 +630,17 @@ vector<GridNode> a_star_algorithm(
         }
     }
 
-    int curr_id = target.x + m*target.y;
+    curr_id = target_id;
     if(nodes[curr_id].pred_x == -1 || nodes[curr_id].pred_y == -1) {
         return {};
+    }
+
+    std::vector<GridNode> out = {};
+    // reconstruct path
+    int src_id = source.x + m*source.y;
+    while(curr_id != src_id) {
+        out.push_back(nodes[curr_id]);
+        curr_id = nodes[curr_id].pred_x + m*nodes[curr_id].pred_y;
     }
 
     std::vector<GridNode> out = {};
