@@ -77,6 +77,7 @@ namespace alex {
 // function declarations
 std::vector<Edge> gen_random_digraph(int n);
 std::pair<int,std::vector<Edge>> gen_random_dag();
+std::vector<GridEdge> gen_random_grid(int m, int n);
 std::vector<unsigned int> birthday_attack_1(std::function<unsigned short(unsigned int)> hash_function);
 std::vector<unsigned int> birthday_attack_2(std::function<unsigned short(unsigned int)> hash_function);
 std::vector<int> topological_sort(int n, std::vector<Edge> edges);

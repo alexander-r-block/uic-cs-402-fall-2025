@@ -107,6 +107,43 @@ vector<Edge> gen_random_digraph(int n) {
     }
     return edges;
 }
+std::vector<GridEdge> gen_random_grid(int m, int n) {
+    const unsigned int diag_percent = 25;
+    const unsigned int card_percent = 60;
+    std::vector<GridEdge> edges;
+    for(int y = 0; y < n; ++y) {
+        for(int x = 0; x < m; ++x) {
+            // cardinal edges
+            if(x > 0 && (sample_int()%100) < card_percent) {
+                edges.push_back(GridEdge(x,y,x-1,y));
+            }
+            if(x < m-1 && (sample_int()%100) < card_percent) {
+                edges.push_back(GridEdge(x,y,x+1,y));
+            }
+            if(y > 0 && (sample_int()%100) < card_percent) {
+                edges.push_back(GridEdge(x,y,x,y-1));
+            }
+            if(y < n-1 && (sample_int()%100) < card_percent) {
+                edges.push_back(GridEdge(x,y,x,y+1));
+            }
+
+            // diagonal edges
+            if(x > 0 && y > 0 && (sample_int()%100) < diag_percent) {
+                edges.push_back(GridEdge(x,y,x-1,y-1));
+            }
+            if(x > 0 && y < n-1 && (sample_int()%100) < diag_percent) {
+                edges.push_back(GridEdge(x,y,x-1,y+1));
+            }
+            if(x < m-1 && y > 0 && (sample_int()%100) < diag_percent) {
+                edges.push_back(GridEdge(x,y,x+1,y-1));
+            }
+            if(x < m-1 && y < n-1 && (sample_int()%100) < diag_percent) {
+                edges.push_back(GridEdge(x,y,x+1,y+1));
+            }
+        }
+    }
+    return edges;
+}
 
 pair<int,vector<Edge>> gen_random_dag() {
     const unsigned int min_per_rank = 1;
@@ -115,6 +152,7 @@ pair<int,vector<Edge>> gen_random_dag() {
     const unsigned int max_rank = 5;
     const unsigned int edge_percent = 35;
     const unsigned int abs_max_edge_weight = 20;
+
     int nodes = 0;    
 
     unsigned int ranks = min_rank + (sample_int() % (max_rank - min_rank + 1));
@@ -567,7 +605,6 @@ vector<GridNode> a_star_algorithm(
 
     for(const GridEdge& e: edges) {
         int from_id = e.from_x + m*e.from_y;
-        cout << "from_id = " << from_id << endl;
         graph[from_id].push_back(e);
     }
 
@@ -579,17 +616,13 @@ vector<GridNode> a_star_algorithm(
         min_queue.pop();
         int curr_id = curr.x+m*curr.y;
         if(curr.path_cost >= nodes[curr_id].path_cost) {
-            cout << "continue?" << endl;
             continue;
         }
-        cout << "curr_id = " << curr_id << endl;
         nodes[curr_id] = curr;
         for(const GridEdge& e: graph[curr_id]) {
             double e_wt = 1.5;
-            cout << "(to_x, to_y) = (" << e.to_x << ", " << e.to_y << ")" << endl;
             if(abs(e.from_x - e.to_x) == 0 || abs(e.from_y - e.to_y) == 0) e_wt = 1.0;
             double cost = curr.path_cost + e_wt + h(GridNode(e.to_x, e.to_y), target);
-            cout << "cost = " << cost << endl;
             min_queue.push(GridNode(e.to_x, e.to_y, cost, curr.x, curr.y));
         }
     }
@@ -603,7 +636,6 @@ vector<GridNode> a_star_algorithm(
     // reconstruct path
     int src_id = source.x + m*source.y;
     while(curr_id != src_id) {
-        cout << curr_id << endl;
         out.push_back(nodes[curr_id]);
         curr_id = nodes[curr_id].pred_x + m*nodes[curr_id].pred_y;
     }
@@ -612,7 +644,7 @@ vector<GridNode> a_star_algorithm(
     // now reconstruct actual path cost
     double cost = 0.0;
     for(int i = 1; i < out.size(); ++i) {
-        cost += (abs(out[i].x - out[i].pred_x) == 0 || abs(out[i].y - out[i].pred_y)) ? 1.0 : 1.5;
+        cost += (abs(out[i].x - out[i].pred_x) == 0 || abs(out[i].y - out[i].pred_y) == 0) ? 1.0 : 1.5;
         out[i].path_cost = cost;
     }
     return out;

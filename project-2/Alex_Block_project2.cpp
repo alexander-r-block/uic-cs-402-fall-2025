@@ -525,7 +525,6 @@ vector<GridNode> a_star_algorithm(
 
     for(const GridEdge& e: edges) {
         int from_id = e.from_x + m*e.from_y;
-        cout << "from_id = " << from_id << endl;
         graph[from_id].push_back(e);
     }
 
@@ -537,17 +536,13 @@ vector<GridNode> a_star_algorithm(
         min_queue.pop();
         int curr_id = curr.x+m*curr.y;
         if(curr.path_cost >= nodes[curr_id].path_cost) {
-            cout << "continue?" << endl;
             continue;
         }
-        cout << "curr_id = " << curr_id << endl;
         nodes[curr_id] = curr;
         for(const GridEdge& e: graph[curr_id]) {
             double e_wt = 1.5;
-            cout << "(to_x, to_y) = (" << e.to_x << ", " << e.to_y << ")" << endl;
             if(abs(e.from_x - e.to_x) == 0 || abs(e.from_y - e.to_y) == 0) e_wt = 1.0;
             double cost = curr.path_cost + e_wt + h(GridNode(e.to_x, e.to_y), target);
-            cout << "cost = " << cost << endl;
             min_queue.push(GridNode(e.to_x, e.to_y, cost, curr.x, curr.y));
         }
     }
@@ -561,7 +556,6 @@ vector<GridNode> a_star_algorithm(
     // reconstruct path
     int src_id = source.x + m*source.y;
     while(curr_id != src_id) {
-        cout << curr_id << endl;
         out.push_back(nodes[curr_id]);
         curr_id = nodes[curr_id].pred_x + m*nodes[curr_id].pred_y;
     }
@@ -570,28 +564,160 @@ vector<GridNode> a_star_algorithm(
     // now reconstruct actual path cost
     double cost = 0.0;
     for(int i = 1; i < out.size(); ++i) {
-        cost += (abs(out[i].x - out[i].pred_x) == 0 || abs(out[i].y - out[i].pred_y)) ? 1.0 : 1.5;
+        cost += (abs(out[i].x - out[i].pred_x) == 0 || abs(out[i].y - out[i].pred_y) == 0) ? 1.0 : 1.5;
         out[i].path_cost = cost;
     }
     return out;
 }
 
+//bool hard_check_ans(std::vector<GridNode>& ans, std::vector<GridNode>& sol, GridNode& source, GridNode& target) {
+//    if(ans.size() != sol.size()) return false;
+//    int sz = ans.size();
+//    if(ans[0].x != source.x || ans[0].y != source.y || ans[sz-1].x != target.x || ans[sz-1].y != target.y) return false;
+//    for(int i = 0; i < sz; ++i) {
+//        //cout << "ans[i] = (" << ans[i].x << ", " << ans[i].y << ", " << ans[i].path_cost << ", " << ans[i].pred_x << ", " << ans[i].pred_y << ")" << endl;
+//        //cout << "sol[i] = (" << sol[i].x << ", " << sol[i].y << ", " << sol[i].path_cost << ", " << sol[i].pred_x << ", " << sol[i].pred_y << ")" << endl;
+//        if(ans[i].x != sol[i].x || ans[i].y != sol[i].y || 
+//            ans[i].path_cost != sol[i].path_cost ||
+//            ans[i].pred_x != sol[i].pred_x || ans[i].pred_y != sol[i].pred_y
+//        ) {
+//            return false;
+//        }
+//    }
+//    return true;
+//}
+//bool soft_check_ans(std::vector<GridNode>& ans, std::vector<GridNode>& sol, GridNode& source, GridNode& target) {
+//    if(ans.size() != sol.size()) return false;
+//    int sz = ans.size();
+//    if(ans[0].x != source.x || ans[0].y != source.y || ans[sz-1].x != target.x || ans[sz-1].y != target.y) return false;
+//    if(ans[sz-1].path_cost != sol[sz-1].path_cost || ans[0].path_cost != 0) return false;
+//
+//    return true;
+//}
 int main() {
 
-    std::vector<unsigned int> collisions = birthday_attack_1(test_hash);
-    std::cout << "{" << std::endl;
-    for(const auto& col: collisions) {
-        std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
-    }
-    std::cout << "}" << std::endl;
+    //std::vector<GridEdge> t3;
+    //int m3 = 9;
+    //int n3 = 5;
 
-    collisions.clear();
-    collisions = birthday_attack_2(test_hash);
-    std::cout << "{" << std::endl;
-    for(const auto& col: collisions) {
-        std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
-    }
-    std::cout << "}" << std::endl;
+    //// horizontal edges
+    //for(int y = 1; y < n3-1; ++y) {
+    //    for(int x = 0; x < m3-1; ++x) {
+    //        t3.push_back(GridEdge(x,y,x+1,y));
+    //        t3.push_back(GridEdge(x+1,y,x,y));
+    //    }
+    //}
+    //// vertical edges
+    //for(int x = 0; x < m3; ++x) {
+    //    for(int y = 0; y < n3-1; ++y) {
+    //        t3.push_back(GridEdge(x,y,x,y+1));
+    //        t3.push_back(GridEdge(x,y+1,x,y));
+    //    }
+    //}
+    //// diagonal edges
+    //for(int y = 0; y < n3-1; ++y) {
+    //    for(int x = 1; x < m3; ++x) {
+    //        t3.push_back(GridEdge(x,y,x-1,y+1));
+    //        t3.push_back(GridEdge(x-1,y+1,x,y));
+    //    }
+    //}
+
+    //GridNode src3(1,3,0,-1,-1);
+    //GridNode tgt3(6,1,0,-1,-1);
+    //std::vector<GridNode> sol3 = {
+    //    src3,
+    //    GridNode(2,2,1.5,1,3), GridNode(3,1,3,2,2), GridNode(4,1,4,3,1),
+    //    GridNode(5,1,5,4,1), GridNode(6,1,6,5,1)
+    //};
+
+
+    //std::vector<GridNode> ans3 = a_star_algorithm(m3, n3, t3, src3, tgt3, heuristic_cost);
+
+    //cout << sol3.size() << endl;
+    //cout << ans3.size() << endl;
+
+    //if(soft_check_ans(ans3, sol3, src3, tgt3)) cout << "I made it!" << endl;
+    //std::vector<GridEdge> t2;
+    //std::vector<GridNode> sol2;
+    //int m2 = 7;
+    //int n2 = 7;
+    //int cost = 1;
+    //GridNode src2(m2-1, n2-1, 0, -1, -1);
+    //GridNode tgt2(0,0,0,-1,-1);
+    //sol2.push_back(src2);
+    //for(int y = n2-1; y>=0; --y) {
+    //    switch(y%2) {
+    //        case 1:
+    //            for(int x = 0; x < m2-1; ++x) {
+    //                sol2.push_back(GridNode(x+1,y,cost,x,y));
+    //                ++cost;
+    //                t2.push_back(GridEdge(x,y,x+1,y));
+    //            }
+    //            if(y > 0) {
+    //                sol2.push_back(GridNode(m2-1,y-1,cost,m2-1,y));
+    //                ++cost;
+    //                t2.push_back(GridEdge(m2-1,y,m2-1,y-1));
+    //            }
+    //            break;
+    //        default:
+    //            for(int x = m2-1; x > 0; --x) {
+    //                sol2.push_back(GridNode(x-1,y,cost,x,y));
+    //                ++cost;
+    //                t2.push_back(GridEdge(x,y,x-1,y));
+    //            }
+    //            if(y > 0) {
+    //                sol2.push_back(GridNode(0,y-1,cost,0,y));
+    //                ++cost;
+    //                t2.push_back(GridEdge(0,y,0,y-1));
+    //            }
+    //            break;
+    //    }
+    //}
+    //cout << cost << endl;
+
+    //std::vector<GridNode> ans = a_star_algorithm(m2, n2, t2, src2, tgt2, heuristic_cost);
+    //cout << ans[ans.size()-1].path_cost << endl;
+
+    //if(hard_check_ans(ans, sol2, src2, tgt2)) cout << "I did it!" << endl;
+
+    //std::vector<unsigned int> collisions = birthday_attack_1(test_hash);
+    //std::cout << "{" << std::endl;
+    //for(const auto& col: collisions) {
+    //    std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
+    //}
+    //std::cout << "}" << std::endl;
+
+    //collisions.clear();
+    //collisions = birthday_attack_2(test_hash);
+    //std::cout << "{" << std::endl;
+    //for(const auto& col: collisions) {
+    //    std::cout << "\th(" << col << "\t) = " << test_hash(col) << std::endl;
+    //}
+    //std::cout << "}" << std::endl;
+
+    //std::vector<GridEdge> t1 = {
+    //    GridEdge(0,0,1,0), GridEdge(0,0,0,1), GridEdge(1,0,2,0), GridEdge(1,0,1,1), GridEdge(1,0,2,1),
+    //    GridEdge(2,0,2,1), GridEdge(2,0,3,0), GridEdge(3,0,3,1), GridEdge(3,0,4,0), GridEdge(0,1,1,1), 
+    //    GridEdge(0,1,0,2), GridEdge(1,1,1,2), GridEdge(2,1,3,2), GridEdge(3,1,4,1), GridEdge(3,1,3,2), 
+    //    GridEdge(0,2,1,2), GridEdge(1,2,2,2), GridEdge(1,2,1,3), GridEdge(2,2,3,2), GridEdge(3,2,4,2), 
+    //    GridEdge(4,2,4,3), GridEdge(4,1,4,2), GridEdge(1,3,0,4), GridEdge(4,3,3,3), GridEdge(4,3,3,4), 
+    //    GridEdge(0,4,1,4), GridEdge(1,4,2,4), GridEdge(2,4,3,4), GridEdge(3,4,4,4) 
+    //};
+    //int m1 = 5;
+    //int n1 = 5;
+
+    //GridNode src1(0,0,0,-1,-1);
+    //GridNode tgt1(4,4,0,-1,-1);
+
+    //std::vector<GridNode> s1 = { 
+    //    src1, 
+    //    GridNode(1,0,1,0,0), GridNode(2,1,2.5,1,0), GridNode(3,2,4,2,1), GridNode(4,2,5,3,2),
+    //    GridNode(4,3,6,4,2), GridNode(3,4,7.5,4,3), GridNode(4,4,8.5,3,4)
+    //};
+
+    //std::vector<GridNode> ans1 = a_star_algorithm(m1, n1, t1, src1, tgt1, heuristic_cost);
+
+    //if(hard_check_ans(ans1, s1, src1, tgt1)) cout << "made it!" << endl;
 
     //std::vector<int> topo = dag_single_source(5, {Edge(0,1), Edge(0,2,-1), Edge(1,3), Edge(2,3), Edge(3,4,-5)}, 1);
 
