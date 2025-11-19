@@ -642,14 +642,6 @@ vector<GridNode> a_star_algorithm(
         out.push_back(nodes[curr_id]);
         curr_id = nodes[curr_id].pred_x + m*nodes[curr_id].pred_y;
     }
-
-    std::vector<GridNode> out = {};
-    // reconstruct path
-    int src_id = source.x + m*source.y;
-    while(curr_id != src_id) {
-        out.push_back(nodes[curr_id]);
-        curr_id = nodes[curr_id].pred_x + m*nodes[curr_id].pred_y;
-    }
     out.push_back(nodes[src_id]);
     std::reverse(out.begin(), out.end());
     // now reconstruct actual path cost

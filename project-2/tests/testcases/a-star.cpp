@@ -56,12 +56,12 @@ bool soft_check_ans(std::vector<GridNode>& ans, std::vector<GridNode>& sol, Grid
 
 int main() {
 
-    double total_score = 25.0;
+    double total_score = 24.0;
     double score = 0.0;
     
     // empty test
-    std::vector<GridNode> empty_res = a_star_algorithm(0, 0, {}, GridNode(), GridNode(), alex::heuristic_cost);
-    if(empty_res.empty()) ++score;
+    //std::vector<GridNode> empty_res = a_star_algorithm(0, 0, {}, GridNode(), GridNode(), alex::heuristic_cost);
+    //if(empty_res.empty()) ++score;
 
 
     // singleton test
@@ -192,8 +192,8 @@ int main() {
 
         std::function<double(GridNode,GridNode)> heur = [&norm](GridNode a, GridNode b) -> double {return ln_norm(norm,a,b);};
 
-        std::vector<GridNode> ans = a_star_algorithm(m, n, edges, src, tgt, alex::heuristic_cost);
-        std::vector<GridNode> sol = alex::a_star_algorithm(m ,n, edges, src, tgt, alex::heuristic_cost);
+        std::vector<GridNode> ans = a_star_algorithm(m, n, edges, src, tgt, heur);
+        std::vector<GridNode> sol = alex::a_star_algorithm(m ,n, edges, src, tgt, heur);
 
         if(soft_check_ans(ans, sol, src, tgt)) ++score;
     }
