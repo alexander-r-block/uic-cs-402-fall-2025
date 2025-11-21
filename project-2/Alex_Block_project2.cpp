@@ -515,12 +515,14 @@ vector<GridNode> a_star_algorithm(
 
     std::vector<vector<GridEdge>> graph(n*m);
     std::vector<GridNode> nodes(n*m);
+    std::vector<double> dists(n*m);
 
     // (x,y) -> x + m*y
     for(int i = 0; i < n*m; ++i) {
         int x_id = i%m;
         int y_id = i / m;
-        nodes[i] = GridNode(x_id, y_id, std::numeric_limits<double>::max(), -1, -1);
+        nodes[i] = GridNode(x_id, y_id, std::numeric_limits<double>::infinity(), -1, -1);
+        dists[i] = std::numeric_limits<double>::infinity();
     }
 
     for(const GridEdge& e: edges) {
@@ -530,7 +532,7 @@ vector<GridNode> a_star_algorithm(
 
     std::priority_queue<GridNode, vector<GridNode>, std::greater<GridNode>> min_queue;
     min_queue.push(GridNode(source.x, source.y, 0, -1, -1));
-
+    dists[source.x+m*source.y] = 0.0;
     int target_id = target.x + m*target.y;
     int curr_id = -1;
 
@@ -538,16 +540,20 @@ vector<GridNode> a_star_algorithm(
         GridNode curr = min_queue.top();
         min_queue.pop();
         curr_id = curr.x+m*curr.y;
-        if(curr.path_cost >= nodes[curr_id].path_cost) {
+        if(dists[curr_id] >= nodes[curr_id].path_cost) {
             continue;
         }
+        curr.path_cost = dists[curr_id];
         nodes[curr_id] = curr;
         if(curr_id == target_id) break;
         for(const GridEdge& e: graph[curr_id]) {
             double e_wt = 1.5;
             if(abs(e.from_x - e.to_x) == 0 || abs(e.from_y - e.to_y) == 0) e_wt = 1.0;
-            double cost = curr.path_cost + e_wt + h(GridNode(e.to_x, e.to_y), target);
-            min_queue.push(GridNode(e.to_x, e.to_y, cost, curr.x, curr.y));
+            double cost = curr.path_cost + e_wt; // + h(GridNode(e.to_x, e.to_y), target);
+            if(cost < dists[e.to_x+m*e.to_y]) {
+                dists[e.to_x+m*e.to_y] = cost;
+                min_queue.push(GridNode(e.to_x, e.to_y, cost + h(GridNode(e.to_x, e.to_y), target), curr.x, curr.y));
+            }
         }
     }
 
@@ -565,12 +571,6 @@ vector<GridNode> a_star_algorithm(
     }
     out.push_back(nodes[src_id]);
     std::reverse(out.begin(), out.end());
-    // now reconstruct actual path cost
-    double cost = 0.0;
-    for(int i = 1; i < out.size(); ++i) {
-        cost += (abs(out[i].x - out[i].pred_x) == 0 || abs(out[i].y - out[i].pred_y) == 0) ? 1.0 : 1.5;
-        out[i].path_cost = cost;
-    }
     return out;
 }
 

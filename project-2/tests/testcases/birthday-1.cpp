@@ -38,7 +38,7 @@ int main() {
         a = primes[a];
         b = primes[b];
 
-        std::function<unsigned short(unsigned int)> hash = [&a, &b](unsigned int x) -> unsigned short {return static_cast<unsigned short>(a*x+b);};
+        std::function<unsigned short(unsigned int)> hash = [&a, &b](unsigned int x) -> unsigned short {return static_cast<unsigned short>(a*(x<<2)+b);};
 
         std::vector<unsigned int> result = birthday_attack_1(hash);
         if(result.size() != 2) {
