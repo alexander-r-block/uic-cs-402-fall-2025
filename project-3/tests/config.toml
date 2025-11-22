@@ -1,0 +1,13 @@
+### DO NOT MODIFY! ###
+[CONFIG]
+ASSIGNMENT_NAME = "Project 3"
+TOTAL_POINTS_POSSIBLE = 100
+TIMEOUT = {"DEFAULT" = 300}
+POSSIBLE_SOURCE_FILE_STEMS = [ "project3" ]
+SUBMISSION_PRECOMPILATION_ARGS = {'DEFAULT' = "-std=c++20"}
+TESTCASE_PRECOMPILATION_ARGS = {'DEFAULT' = "-std=c++20"}
+TESTCASE_COMPILATION_ARGS = {'DEFAULT' = "-std=c++20"}
+TESTCASE_WEIGHT = { 'weird.cpp' = 0.25, 'bits-to-tree.cpp' = 0.25, 'light-post.cpp' = 0.25, 'smallest-subset-sum.cpp' = 0.25  }
+
+[GCC]
+MEMORY_LEAK_DETECTION = true
