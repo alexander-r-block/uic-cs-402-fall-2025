@@ -62,15 +62,35 @@ double ln_norm(unsigned int n, GridNode a, GridNode b) {
 }
 
 
-bool hard_check_ans(std::vector<GridNode>& ans, std::vector<GridNode>& sol, GridNode& source, GridNode& target) {
-    if(ans.size() != sol.size()) return false;
+bool hard_check_ans(std::vector<GridNode>& ans, std::vector<GridNode>& sol, GridNode& source, GridNode& target, std::ofstream& out) {
+    if(ans.size() != sol.size()) {
+        out << "\tHard check failed: lists not same size" << std::endl;
+        return false;
+    }
     int sz = ans.size();
-    if(ans[0].x != source.x || ans[0].y != source.y || ans[sz-1].x != target.x || ans[sz-1].y != target.y) return false;
+    if(ans[0].x != source.x || ans[0].y != source.y) {
+        out << "\tHard check failed: ans[0] not the source node" << std::endl;
+        return false;
+    }
+    if(ans[sz-1].x != target.x || ans[sz-1].y != target.y) {
+        out << "\tHard check failed: ans[ans.size()-1] not the target node" << std::endl;
+        return false;
+    }
     for(int i = 0; i < sz; ++i) {
-        if(ans[i].x != sol[i].x || ans[i].y != sol[i].y || 
-            ans[i].path_cost != sol[i].path_cost ||
-            ans[i].pred_x != sol[i].pred_x || ans[i].pred_y != sol[i].pred_y
-        ) return false;
+        if(ans[i].x != sol[i].x || ans[i].y != sol[i].y) {
+            out << "\tHard check failed: ans[i].x/y != sol[i].x/y for i=" << i << std::endl;
+            return false;
+        }
+
+        if(ans[i].path_cost != sol[i].path_cost) {
+            out << "\tHard check failed: ans[i].cost != sol[i].cost for i=" << i << std::endl;
+            return false;
+        }
+            
+        if(ans[i].pred_x != sol[i].pred_x || ans[i].pred_y != sol[i].pred_y) {
+            out << "\tHard check failed: ans[i].pred_x/y != sol[i].pred_x/y for i="<< i << std::endl;
+            return false;
+        }
     }
     return true;
 }
@@ -172,7 +192,7 @@ int main() {
 
     std::vector<GridNode> ans1 = a_star_algorithm(m1, n1, t1, src1, tgt1, alex::heuristic_cost);
 
-    if(hard_check_ans(ans1, sol1, src1, tgt1)) ++score;
+    if(hard_check_ans(ans1, sol1, src1, tgt1, out_file)) ++score;
     else out_file << "First hard check failed." << std::endl;
 
 
@@ -215,7 +235,7 @@ int main() {
 
     auto ans2 = a_star_algorithm(m2, n2, t2, src2, tgt2, alex::heuristic_cost);
 
-    if(hard_check_ans(ans2, sol2, src2, tgt2)) ++score;
+    if(hard_check_ans(ans2, sol2, src2, tgt2, out_file)) ++score;
     else out_file << "Second hard check failed." << std::endl;
 
 
