@@ -5,7 +5,7 @@ TestCase                                Result
 binary-radix-test.cpp                   14/14
 bubble-test.cpp                         5/5
 bucket-merge-test.cpp                   14/14
-extra-credit.cpp                        2.0/10
+extra-credit.cpp                        6.0/10
 general-radix-test.cpp                  18/18
 hybrid-test.cpp                         18/18
 insertion-test.cpp                      5/5
@@ -19,7 +19,7 @@ merge-test.cpp                          7/7
 quicksort-test.cpp                      7/7
 selection-test.cpp                      5/5
 ================================================================
-Result: 127/135
+Result: 131/135
 
 Key:
 	Failed to Compile: Your submission did not compile due to a syntax or naming error
