@@ -177,7 +177,7 @@ vector<int> weird_traversal(TreeNode* root) {
  *              /
  *             1
  *
- *  - [1, 0, 1, 0, 1, 1, 0, 1, 0]
+ *  - [1, 0, 1, 0, 1, 1, 0, 1, 0, 0]
  *      -> (in a format where each node has a vector of children)
  *                0
  *              / | \
