@@ -20,7 +20,7 @@ bool check_equal(TreeNode* t1, TreeNode* t2) {
 
 int main() {
     const std::vector<bool> test1 = {1, 0};
-    const std::vector<bool> test2 = {1, 0, 1, 0, 1, 1, 0, 1, 0};
+    const std::vector<bool> test2 = {1, 0, 1, 0, 1, 1, 0, 1, 0, 0};
 
     TreeNode* ans1 = bits_to_tree(test1);
     TreeNode* ans2 = bits_to_tree(test2);
