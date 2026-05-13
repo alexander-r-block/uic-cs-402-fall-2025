@@ -32,7 +32,7 @@ bool check_equal(TreeNode* t1, TreeNode* t2, std::ofstream& out) {
 }
 
 int main() {
-    std::ofstream out_file("bits-to-tree-info.txt");
+    std::ofstream out_file("/grading_dir/bits-to-tree-info.txt");
 
     const std::vector<bool> test1 = {1, 0};
     const std::vector<bool> test2 = {1, 0, 1, 0, 1, 1, 0, 1, 0, 0};
